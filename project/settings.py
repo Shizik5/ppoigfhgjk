@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'twilio',
+    'drf_api_logger',
+    'django_redis',
 
     #MYAPPS
     'registration',
@@ -61,6 +63,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -91,7 +97,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hackaton',
-        'USER': 'alina',
+        'USER': 'sadyrbek',
         'PASSWORD': '1',
         'HOST': '127.0.0.1',
         'PORT': '5432'
@@ -172,4 +178,18 @@ CART_SESSION_ID = 'cart'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+DRF_API_LOGGER_DATABASE = True
+
+CACHE_TTL = 60 * 30
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        },
+    }
 }
